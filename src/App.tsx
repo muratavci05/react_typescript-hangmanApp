@@ -4,18 +4,13 @@ import { HangmanWord } from "./components/HangmanWord";
 import { Keyboard } from "./components/Keyboard";
 import words from "./wordList.json";
 
-function App() {
-  const [wordToGuess, setWordToGuess] = useState(() => {
-    /* return "test"; */
-    return words[Math.floor(Math.random() * words.length)];
-  });
+function getWord() {
+  return words[Math.floor(Math.random() * words.length)];
+}
 
-  const [guessedLetters, setGuessedLetters] = useState<string[]>([
-    /*  "g",
-    "t",
-    "o",
-    "e" */
-  ]);
+function App() {
+  const [wordToGuess, setWordToGuess] = useState(getWord);
+  const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
   const incorrectLetters = guessedLetters.filter(
     (letter) => !wordToGuess.includes(letter)
   );
@@ -50,6 +45,25 @@ function App() {
     };
   }, [guessedLetters]);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key;
+
+      if (key !== "Enter") return;
+      setWordToGuess(getWord());
+
+      e.preventDefault();
+      setGuessedLetters([])
+      setWordToGuess(getWord());
+    };
+
+    document.addEventListener("keypress", handler);
+
+    return () => {
+      document.removeEventListener("keypress", handler);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -64,12 +78,16 @@ function App() {
       <div style={{ fontSize: "2rem", textAlign: "center" }}>
         {isWinner && "Winner! - Refresh to try again"}
         {isLoser && "Nice Try - Refresh to try again"}
-        </div>
+      </div>
       <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
-      <HangmanWord reveal= {isLoser} guessedLetters={guessedLetters} wordToGuess={wordToGuess} />
+      <HangmanWord
+        reveal={isLoser}
+        guessedLetters={guessedLetters}
+        wordToGuess={wordToGuess}
+      />
       <div style={{ alignSelf: "stretch" }}>
         <Keyboard
-        disabled = {isWinner || isLoser}
+          disabled={isWinner || isLoser}
           activeLetter={guessedLetters.filter((letter) =>
             wordToGuess.includes(letter)
           )}
