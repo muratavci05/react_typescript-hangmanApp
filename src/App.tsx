@@ -3,6 +3,7 @@ import { HangmanDrawing } from "./components/HangmanDrawing";
 import { HangmanWord } from "./components/HangmanWord";
 import { Keyboard } from "./components/Keyboard";
 import words from "./wordList.json";
+import "./App.css";
 
 function getWord() {
   return words[Math.floor(Math.random() * words.length)];
@@ -75,6 +76,9 @@ function App() {
         alignItems: "center",
       }}
     >
+      <div className="btn-newHangman">
+        <a href="/"><button>Refresh </button></a>
+      </div>
       <div style={{ fontSize: "2rem", textAlign: "center" }}>
         {isWinner && "Winner! - Refresh to try again"}
         {isLoser && "Nice Try - Refresh to try again"}

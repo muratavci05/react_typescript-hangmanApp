@@ -1,0 +1,21 @@
+
+.btn-newHangman button {
+    width: 100px;
+    height: 29px;
+    margin-left: 40px;
+    border-radius: 5px;
+    font-size: 13px;
+    border-style: none;
+    background: rgb(12, 11, 11);
+    color: white;
+    cursor: pointer;
+
+}
+
+.btn-newHangman button:hover {
+    background: rgb(223, 220, 220);
+    color: black;
+    font-style: bold;
+}
+
+   
